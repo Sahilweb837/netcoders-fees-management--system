@@ -52,34 +52,54 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         body {
             height: 100vh;
             margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #fff;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #ffffff;
             display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-wrapper {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            height: 600px;
+            background: #fff;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.08);
+            border: 1px solid #f0f0f0;
         }
         .login-left {
-            flex: 1;
-            background: linear-gradient(135deg, #ff5532 0%, #cc3d1f 100%);
+            flex: 1.2;
+            background: #fdfdfd;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: #fff;
-            padding: 40px;
-            text-align: center;
+            padding: 60px;
+            border-right: 1px solid #f5f5f5;
         }
         .login-left img {
-            max-width: 280px;
-            margin-bottom: 30px;
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
+            max-width: 320px;
+            margin-bottom: 40px;
+            transition: transform 0.5s ease;
         }
-        .login-left h1 { font-weight: 800; font-size: 2.5rem; margin-bottom: 10px; }
+        .login-left img:hover { transform: scale(1.02); }
+        .login-left h1 { 
+            color: #1a1a1a; 
+            font-weight: 900; 
+            font-size: 2.8rem; 
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+        .login-left p { color: #666; font-size: 1.1rem; }
         .login-right {
-            width: 450px;
+            flex: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 50px;
-            background: #fff;
+            padding: 60px;
+            background: #ffffff;
         }
         .login-form-container { width: 100%; max-width: 350px; }
         .form-control { border-radius: 8px; padding: 12px; border: 1px solid #ddd; }

@@ -1,9 +1,9 @@
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="<?php echo BASE_URL; ?>" class="brand-link text-center py-3">
-        <img src="<?php echo BASE_URL; ?>image.png" alt="Logo" class="brand-image img-circle elevation-3" style="opacity: .8; float: none; max-height: 50px;">
-        <div class="mt-2 brand-text font-weight-bold" style="display: block; font-size: 1.2rem; color: #ff5532;"><?php echo APP_NAME; ?></div>
+    <a href="<?php echo BASE_URL; ?>" class="brand-link text-center py-3" style="background: #ffffff; border-bottom: 1px solid #eee;">
+        <img src="<?php echo BASE_URL; ?>image.png" alt="Logo" class="brand-image" style="float: none; max-height: 55px; width: auto; filter: none;">
+        <div class="mt-2 brand-text font-weight-bold" style="display: block; font-size: 1.3rem; color: #ff5532; letter-spacing: -0.5px;"><?php echo APP_NAME; ?></div>
     </a>
 
     <!-- Sidebar -->

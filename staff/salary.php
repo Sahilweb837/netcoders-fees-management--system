@@ -4,6 +4,20 @@ require_once '../includes/auth.php';
 
 checkLogin();
 
+// Auto-Migration: Ensure table exists
+$conn->query("CREATE TABLE IF NOT EXISTS `staff_payments` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `staff_id` int(11) NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `payment_month` varchar(20) NOT NULL,
+  `payment_date` date NOT NULL,
+  `payment_method` varchar(50) DEFAULT 'Cash',
+  `remarks` text DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `staff_id` (`staff_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;");
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pay_salary'])) {
     $staff_id = (int)$_POST['staff_id'];
     $amount = (float)$_POST['amount'];
