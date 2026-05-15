@@ -103,26 +103,39 @@ include '../includes/header.php';
                         </tr>
                     </thead>
                     <tbody>
-                        <?php while($row = $students->fetch_assoc()): ?>
+                        <?php while($row = $students->fetch_assoc()): 
+                            $due = $row['total_fee'] - $row['paid_fee'];
+                            $status_badge = '';
+                            if ($row['paid_fee'] >= $row['total_fee']) {
+                                $status_badge = '<span class="badge badge-success">FULLY PAID</span>';
+                            } elseif ($row['paid_fee'] > 0) {
+                                $status_badge = '<span class="badge badge-warning">PARTIAL</span>';
+                            } else {
+                                $status_badge = '<span class="badge badge-danger">UNPAID</span>';
+                            }
+                        ?>
                         <tr>
-                            <td><?php echo $row['student_id']; ?></td>
+                            <td><strong><?php echo $row['student_id']; ?></strong></td>
                             <td>
                                 <?php if($row['photo']): ?>
-                                    <img src="../uploads/<?php echo $row['photo']; ?>" width="40" height="40" class="img-circle">
+                                    <img src="../uploads/<?php echo $row['photo']; ?>" class="img-circle" style="width:40px; height:40px; object-fit:cover;">
                                 <?php else: ?>
-                                    <i class="fas fa-user-circle fa-2x text-muted"></i>
+                                    <div class="img-circle bg-secondary d-flex align-items-center justify-content-center" style="width:40px; height:40px;">
+                                        <i class="fas fa-user text-white"></i>
+                                    </div>
                                 <?php endif; ?>
                             </td>
                             <td><?php echo $row['full_name']; ?></td>
                             <td><?php echo $row['course_name']; ?></td>
                             <td><?php echo CURRENCY . number_format($row['total_fee'], 2); ?></td>
-                            <td class="text-warning"><?php echo CURRENCY . number_format($row['discount'], 2); ?></td>
-                            <td class="text-success"><?php echo CURRENCY . number_format($row['paid_fee'], 2); ?></td>
-                            <td class="text-danger"><?php echo CURRENCY . number_format($row['due_fee'], 2); ?></td>
+                            <td><?php echo CURRENCY . number_format($row['discount'], 2); ?></td>
+                            <td class="text-success font-weight-bold"><?php echo CURRENCY . number_format($row['paid_fee'], 2); ?></td>
+                            <td class="text-danger font-weight-bold"><?php echo CURRENCY . number_format($due, 2); ?></td>
+                            <td><?php echo $status_badge; ?></td>
                             <td>
-                                <a href="view.php?id=<?php echo $row['id']; ?>" class="btn btn-xs btn-primary shadow-sm" title="View Profile"><i class="fas fa-eye"></i></a>
-                                <a href="edit.php?id=<?php echo $row['id']; ?>" class="btn btn-xs btn-info shadow-sm" title="Edit"><i class="fas fa-edit"></i></a>
-                                <a href="?delete=<?php echo $row['id']; ?>" class="btn btn-xs btn-danger shadow-sm" onclick="return confirm('Are you sure?')" title="Delete"><i class="fas fa-trash"></i></a>
+                                <a href="view.php?id=<?php echo $row['id']; ?>" class="btn btn-sm btn-primary shadow-sm" title="View Profile"><i class="fas fa-eye"></i></a>
+                                <a href="edit.php?id=<?php echo $row['id']; ?>" class="btn btn-sm btn-info shadow-sm" title="Edit"><i class="fas fa-edit"></i></a>
+                                <a href="?delete=<?php echo $row['id']; ?>" class="btn btn-sm btn-danger shadow-sm" onclick="return confirm('Delete student profile?')" title="Delete"><i class="fas fa-trash"></i></a>
                             </td>
                         </tr>
                         <?php endwhile; ?>
