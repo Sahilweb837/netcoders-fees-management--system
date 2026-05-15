@@ -1,0 +1,28 @@
+# Netcoder ERP - Professional Apache/Nginx Configuration
+
+# Disable directory browsing
+Options -Indexes
+
+# Protect configuration files
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<Files "config/database.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Ensure PHP files are executed
+<FilesMatch "\.php$">
+    SetHandler application/x-httpd-php
+</FilesMatch>
+
+# Handle 404 errors gracefully
+ErrorDocument 404 /index.php
+
+# Redirect to HTTPS if needed (uncomment if not handled by Nginx)
+# RewriteEngine On
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]

@@ -1,0 +1,136 @@
+:root {
+    --primary-color: #f39c12; /* Orange */
+    --primary-dark: #e67e22;
+    --secondary-color: #858796;
+    --success-color: #1cc88a;
+    --info-color: #36b9cc;
+    --warning-color: #f1c40f;
+    --danger-color: #e74a3b;
+    --dark-bg: #1a1c23;
+    --sidebar-bg: #f39c12;
+    --glass-bg: rgba(255, 255, 255, 0.1);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --text-light: #f8f9fc;
+    --text-dark: #2c3e50;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fc;
+    color: var(--text-dark);
+    margin: 0;
+    overflow-x: hidden;
+}
+
+/* Glassmorphism Classes */
+.glass-card {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 15px;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+}
+
+.dark-mode .glass-card {
+    background: rgba(26, 28, 35, 0.8);
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Sidebar Styling */
+#sidebar {
+    min-width: 250px;
+    max-width: 250px;
+    background: var(--sidebar-bg);
+    background: linear-gradient(180deg, #f39c12 10%, #e63c22 100%);
+    color: #fff;
+    transition: all 0.3s;
+    min-height: 100vh;
+}
+
+#sidebar .sidebar-header {
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+#sidebar ul.components {
+    padding: 20px 0;
+}
+
+#sidebar ul li a {
+    padding: 12px 20px;
+    font-size: 1.1em;
+    display: block;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+#sidebar ul li a:hover, #sidebar ul li.active a {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.1);
+    border-left: 4px solid #fff;
+}
+
+/* Dashboard Stats Cards */
+.stat-card {
+    border-radius: 15px;
+    padding: 20px;
+    transition: transform 0.3s ease;
+    border: none;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-card .icon {
+    font-size: 2.5rem;
+    opacity: 0.3;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+/* Login Page Styling */
+.login-container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.login-box {
+    width: 100%;
+    max-width: 400px;
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+.form-control {
+    border-radius: 10px;
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+.btn-primary {
+    background: #4e73df;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background: #2e59d9;
+}
