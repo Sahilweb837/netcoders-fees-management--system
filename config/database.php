@@ -1,139 +1,184 @@
 <?php
-ob_start();
-if (session_status() === PHP_SESSION_NONE) {
-    ini_set('session.cookie_path', '/');
-    ini_set('session.gc_maxlifetime', 3600);
-    // Secure session cookies for Cloudways/Proxy
-    $is_secure = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || 
-                 (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
-    
-    session_set_cookie_params([
-        'lifetime' => 3600,
-        'path' => '/',
-        'domain' => $_SERVER['HTTP_HOST'],
-        'secure' => $is_secure,
-        'httponly' => true,
-        'samesite' => 'Lax'
-    ]);
-    session_start();
-}
-/**
- * Professional FMS + Institute ERP Configuration
- */
 
-// Database Configuration
-define('DB_HOST', 'localhost');
-define('DB_USER', 'mhqhxuaasp');
-define('DB_PASS', '4m3xU8bTVq');
-define('DB_NAME', 'mhqhxuaasp');
+use Illuminate\Support\Str;
+use Pdo\Mysql;
 
-// Set Timezone
-date_default_timezone_set('Asia/Kolkata');
+return [
 
-// Application Configuration
-define('APP_NAME', 'Netcoder ERP');
-define('CURRENCY', '₹');
+    /*
+    |--------------------------------------------------------------------------
+    | Default Database Connection Name
+    |--------------------------------------------------------------------------
+    |
+    | Here you may specify which of the database connections below you wish
+    | to use as your default connection for database operations. This is
+    | the connection which will be utilized unless another connection
+    | is explicitly specified when you execute a query / statement.
+    |
+    */
 
-// Robust Base URL detection
-$is_https = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || 
-             (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
-$protocol = $is_https ? "https" : "http";
-$host = $_SERVER['HTTP_HOST'];
-$script_name = $_SERVER['SCRIPT_NAME']; 
-$root_path = str_replace('\\', '/', dirname(dirname($script_name)));
-$base_url = $protocol . "://" . $host . rtrim($root_path, '/') . '/';
-define('BASE_URL', $base_url);
+    'default' => env('DB_CONNECTION', 'sqlite'),
 
-// Establishing Connection
-$conn = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+    /*
+    |--------------------------------------------------------------------------
+    | Database Connections
+    |--------------------------------------------------------------------------
+    |
+    | Below are all of the database connections defined for your application.
+    | An example configuration is provided for each database system which
+    | is supported by Laravel. You're free to add / remove connections.
+    |
+    */
 
-// Check Connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+    'connections' => [
 
-// Sync Database Timezone with PHP
-$conn->query("SET time_zone = '+05:30'");
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+        'sqlite' => [
+            'driver' => 'sqlite',
+            'url' => env('DB_URL'),
+            'database' => env('DB_DATABASE', database_path('database.sqlite')),
+            'prefix' => '',
+            'foreign_key_constraints' => env('DB_FOREIGN_KEYS', true),
+            'busy_timeout' => null,
+            'journal_mode' => null,
+            'synchronous' => null,
+            'transaction_mode' => 'DEFERRED',
+        ],
 
-// Set Charset
-$conn->set_charset("utf8mb4");
+        'mysql' => [
+            'driver' => 'mysql',
+            'url' => env('DB_URL'),
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => env('DB_DATABASE', 'laravel'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => env('DB_CHARSET', 'utf8mb4'),
+            'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                (PHP_VERSION_ID >= 80500 ? Mysql::ATTR_SSL_CA : PDO::MYSQL_ATTR_SSL_CA) => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
 
-// Safe Migration Helper
-function addColumnIfNotExists($conn, $table, $column, $definition) {
-    $check = $conn->query("SHOW COLUMNS FROM `$table` LIKE '$column'");
-    if ($check->num_rows == 0) {
-        $conn->query("ALTER TABLE `$table` ADD `$column` $definition");
-    }
-}
+        'mariadb' => [
+            'driver' => 'mariadb',
+            'url' => env('DB_URL'),
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '3306'),
+            'database' => env('DB_DATABASE', 'laravel'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => env('DB_CHARSET', 'utf8mb4'),
+            'collation' => env('DB_COLLATION', 'utf8mb4_unicode_ci'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                (PHP_VERSION_ID >= 80500 ? Mysql::ATTR_SSL_CA : PDO::MYSQL_ATTR_SSL_CA) => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
 
-addColumnIfNotExists($conn, 'students', 'discount', 'DECIMAL(10,2) DEFAULT 0.00 AFTER `total_fee`');
-addColumnIfNotExists($conn, 'students', 'branch_id', 'INT(11) DEFAULT NULL AFTER `batch_id`');
-addColumnIfNotExists($conn, 'attendance', 'fine_amount', 'DECIMAL(10,2) DEFAULT 0.00 AFTER `status`');
-addColumnIfNotExists($conn, 'attendance', 'check_in_time', 'TIME DEFAULT NULL AFTER `attendance_date`');
-addColumnIfNotExists($conn, 'attendance', 'check_out_time', 'TIME DEFAULT NULL AFTER `check_in_time`');
-addColumnIfNotExists($conn, 'users', 'branch_id', 'INT(11) DEFAULT NULL AFTER `role`');
-addColumnIfNotExists($conn, 'users', 'last_login', 'DATETIME DEFAULT NULL');
-addColumnIfNotExists($conn, 'users', 'last_ip', 'VARCHAR(45) DEFAULT NULL');
-addColumnIfNotExists($conn, 'users', 'plain_password', 'VARCHAR(255) DEFAULT NULL');
+        'pgsql' => [
+            'driver' => 'pgsql',
+            'url' => env('DB_URL'),
+            'host' => env('DB_HOST', '127.0.0.1'),
+            'port' => env('DB_PORT', '5432'),
+            'database' => env('DB_DATABASE', 'laravel'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => env('DB_CHARSET', 'utf8'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => 'public',
+            'sslmode' => env('DB_SSLMODE', 'prefer'),
+        ],
 
-// Activity Logs Table
-$conn->query("CREATE TABLE IF NOT EXISTS `activity_logs` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) DEFAULT NULL,
-  `action` varchar(255) NOT NULL,
-  `ip_address` varchar(45) DEFAULT NULL,
-  `user_agent` text DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+        'sqlsrv' => [
+            'driver' => 'sqlsrv',
+            'url' => env('DB_URL'),
+            'host' => env('DB_HOST', 'localhost'),
+            'port' => env('DB_PORT', '1433'),
+            'database' => env('DB_DATABASE', 'laravel'),
+            'username' => env('DB_USERNAME', 'root'),
+            'password' => env('DB_PASSWORD', ''),
+            'charset' => env('DB_CHARSET', 'utf8'),
+            'prefix' => '',
+            'prefix_indexes' => true,
+            // 'encrypt' => env('DB_ENCRYPT', 'yes'),
+            // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
+        ],
 
-// Client Invoices Table
-$conn->query("CREATE TABLE IF NOT EXISTS `client_invoices` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `invoice_no` varchar(50) NOT NULL,
-  `client_name` varchar(150) NOT NULL,
-  `client_phone` varchar(20) DEFAULT NULL,
-  `client_address` text DEFAULT NULL,
-  `service_description` text NOT NULL,
-  `amount` decimal(10,2) NOT NULL,
-  `tax` decimal(10,2) DEFAULT 0.00,
-  `total_amount` decimal(10,2) NOT NULL,
-  `payment_mode` varchar(50) DEFAULT 'Cash',
-  `invoice_date` date NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `invoice_no` (`invoice_no`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+    ],
 
-// Common Functions
-function logActivity($action) {
-    global $conn;
-    $user_id = $_SESSION['user_id'] ?? NULL;
-    $ip = $_SERVER['REMOTE_ADDR'];
-    $ua = $_SERVER['HTTP_USER_AGENT'];
-    $stmt = $conn->prepare("INSERT INTO activity_logs (user_id, action, ip_address, user_agent) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("isss", $user_id, $action, $ip, $ua);
-    $stmt->execute();
-}
+    /*
+    |--------------------------------------------------------------------------
+    | Migration Repository Table
+    |--------------------------------------------------------------------------
+    |
+    | This table keeps track of all the migrations that have already run for
+    | your application. Using this information, we can determine which of
+    | the migrations on disk haven't actually been run on the database.
+    |
+    */
 
-function redirect($url) {
-    header("Location: " . BASE_URL . $url);
-    exit();
-}
+    'migrations' => [
+        'table' => 'migrations',
+        'update_date_on_publish' => true,
+    ],
 
-function flash($message, $type = 'success') {
-    $_SESSION['flash'] = ['message' => $message, 'type' => $type];
-}
+    /*
+    |--------------------------------------------------------------------------
+    | Redis Databases
+    |--------------------------------------------------------------------------
+    |
+    | Redis is an open source, fast, and advanced key-value store that also
+    | provides a richer body of commands than a typical key-value system
+    | such as Memcached. You may define your connection settings here.
+    |
+    */
 
-function getFlash() {
-    if (isset($_SESSION['flash'])) {
-        $flash = $_SESSION['flash'];
-        unset($_SESSION['flash']);
-        return $flash;
-    }
-    return null;
-}
-?>
+    'redis' => [
+
+        'client' => env('REDIS_CLIENT', 'phpredis'),
+
+        'options' => [
+            'cluster' => env('REDIS_CLUSTER', 'redis'),
+            'prefix' => env('REDIS_PREFIX', Str::slug((string) env('APP_NAME', 'laravel')).'-database-'),
+            'persistent' => env('REDIS_PERSISTENT', false),
+        ],
+
+        'default' => [
+            'url' => env('REDIS_URL'),
+            'host' => env('REDIS_HOST', '127.0.0.1'),
+            'username' => env('REDIS_USERNAME'),
+            'password' => env('REDIS_PASSWORD'),
+            'port' => env('REDIS_PORT', '6379'),
+            'database' => env('REDIS_DB', '0'),
+            'max_retries' => env('REDIS_MAX_RETRIES', 3),
+            'backoff_algorithm' => env('REDIS_BACKOFF_ALGORITHM', 'decorrelated_jitter'),
+            'backoff_base' => env('REDIS_BACKOFF_BASE', 100),
+            'backoff_cap' => env('REDIS_BACKOFF_CAP', 1000),
+        ],
+
+        'cache' => [
+            'url' => env('REDIS_URL'),
+            'host' => env('REDIS_HOST', '127.0.0.1'),
+            'username' => env('REDIS_USERNAME'),
+            'password' => env('REDIS_PASSWORD'),
+            'port' => env('REDIS_PORT', '6379'),
+            'database' => env('REDIS_CACHE_DB', '1'),
+            'max_retries' => env('REDIS_MAX_RETRIES', 3),
+            'backoff_algorithm' => env('REDIS_BACKOFF_ALGORITHM', 'decorrelated_jitter'),
+            'backoff_base' => env('REDIS_BACKOFF_BASE', 100),
+            'backoff_cap' => env('REDIS_BACKOFF_CAP', 1000),
+        ],
+
+    ],
+
+];
