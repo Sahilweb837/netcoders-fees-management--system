@@ -1,5 +1,22 @@
 <?php
 ob_start();
+if (session_status() === PHP_SESSION_NONE) {
+    ini_set('session.cookie_path', '/');
+    ini_set('session.gc_maxlifetime', 3600);
+    // Secure session cookies for Cloudways/Proxy
+    $is_secure = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || 
+                 (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
+    
+    session_set_cookie_params([
+        'lifetime' => 3600,
+        'path' => '/',
+        'domain' => $_SERVER['HTTP_HOST'],
+        'secure' => $is_secure,
+        'httponly' => true,
+        'samesite' => 'Lax'
+    ]);
+    session_start();
+}
 /**
  * Professional FMS + Institute ERP Configuration
  */
@@ -73,14 +90,6 @@ $conn->query("CREATE TABLE IF NOT EXISTS `activity_logs` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
-
-// Global Session Start
-if (session_status() === PHP_SESSION_NONE) {
-    ini_set('session.cookie_path', '/');
-    ini_set('session.gc_maxlifetime', 3600);
-    session_set_cookie_params(3600, '/');
-    session_start();
-}
 
 // Common Functions
 function logActivity($action) {
