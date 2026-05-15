@@ -4,6 +4,9 @@ require_once '../includes/auth.php';
 
 checkLogin();
 
+// Auto-Migration: Ensure check_in_time column exists
+$conn->query("ALTER TABLE attendance ADD COLUMN IF NOT EXISTS check_in_time TIME NULL AFTER attendance_date");
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $attendance_date = $_POST['attendance_date'];
     $attendance_data = $_POST['attendance']; // Array of student_id => status
@@ -22,7 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $old_fine = $old_attendance['fine_amount'];
             
             // Update attendance
-            $conn->query("UPDATE attendance SET status = '$status', fine_amount = $applied_fine, check_in_time = '$check_in_time' WHERE student_id = $student_id AND attendance_date = '$attendance_date'");
+            $check_in_sql = ($check_in_time) ? "'$check_in_time'" : "NULL";
+            $conn->query("UPDATE attendance SET status = '$status', fine_amount = $applied_fine, check_in_time = $check_in_sql WHERE student_id = $student_id AND attendance_date = '$attendance_date'");
             
             // Adjust student due if fine changed
             if ($old_fine != $applied_fine) {
@@ -31,7 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         } else {
             // Insert new attendance
-            $conn->query("INSERT INTO attendance (student_id, status, fine_amount, attendance_date, check_in_time) VALUES ($student_id, '$status', $applied_fine, '$attendance_date', '$check_in_time')");
+            $check_in_sql = ($check_in_time) ? "'$check_in_time'" : "NULL";
+            $conn->query("INSERT INTO attendance (student_id, status, fine_amount, attendance_date, check_in_time) VALUES ($student_id, '$status', $applied_fine, '$attendance_date', $check_in_sql)");
             
             // Apply fine to student due if absent
             if ($applied_fine > 0) {

@@ -89,10 +89,10 @@ $inv = $query->fetch_assoc();
                 <table>
                     <tr>
                         <td>
-                            <strong><?php echo APP_NAME; ?></strong><br>
-                            Professional Training Institute<br>
-                            Admin Office, New Delhi<br>
-                            Contact: +91 9876543210
+                            <strong>Netcoder Technology - Dharamshala</strong><br>
+                            1st Floor, above Gramin Bank, near Govt. ITI,<br>
+                            Dari, Dharamshala, HP 176215<br>
+                            Contact: +91 98167 32055
                         </td>
                         <td>
                             <strong>Student Details:</strong><br>

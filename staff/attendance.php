@@ -4,19 +4,24 @@ require_once '../includes/auth.php';
 
 checkLogin();
 
+// Auto-Migration: Ensure check_in_time column exists
+$conn->query("ALTER TABLE attendance ADD COLUMN IF NOT EXISTS check_in_time TIME NULL AFTER attendance_date");
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $attendance_date = $_POST['attendance_date'];
     $attendance_data = $_POST['attendance']; // Array of staff_id => status
 
     foreach ($attendance_data as $staff_id => $status) {
         $staff_id = (int)$staff_id;
-        $check_in_time = date('H:i:s');
+        $check_in_time = ($status === 'present') ? date('H:i:s') : NULL;
+        $check_in_sql = ($check_in_time) ? "'$check_in_time'" : "NULL";
+
         // Check if already marked
         $check = $conn->query("SELECT id FROM attendance WHERE staff_id = $staff_id AND attendance_date = '$attendance_date'");
         if ($check->num_rows > 0) {
-            $conn->query("UPDATE attendance SET status = '$status', check_in_time = '$check_in_time' WHERE staff_id = $staff_id AND attendance_date = '$attendance_date'");
+            $conn->query("UPDATE attendance SET status = '$status', check_in_time = $check_in_sql WHERE staff_id = $staff_id AND attendance_date = '$attendance_date'");
         } else {
-            $conn->query("INSERT INTO attendance (staff_id, status, attendance_date, check_in_time) VALUES ($staff_id, '$status', '$attendance_date', '$check_in_time')");
+            $conn->query("INSERT INTO attendance (staff_id, status, attendance_date, check_in_time) VALUES ($staff_id, '$status', '$attendance_date', $check_in_sql)");
         }
     }
     flash("Staff attendance marked successfully!");

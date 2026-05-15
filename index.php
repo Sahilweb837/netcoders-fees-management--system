@@ -68,14 +68,22 @@ while($row = $course_dist_res->fetch_assoc()) {
 include 'includes/header.php';
 ?>
 
+<style>
+    .content-wrapper { background: #ffffff !important; }
+    .content-header h1 { color: #000000 !important; }
+    .card { border: 1px solid #eee; box-shadow: none !important; }
+    .small-box { border-radius: 15px !important; overflow: hidden; }
+    .text-muted { color: #555 !important; }
+</style>
+
 <!-- Content Header (Page header) -->
 <div class="content-header">
     <div class="container-fluid">
         <div class="row mb-2">
             <div class="col-sm-6">
-                <h1 class="m-0" style="font-weight: 800; color: #333;">
-                    <img src="<?php echo BASE_URL; ?>image.png" alt="Logo" style="height: 45px; margin-right: 10px; margin-top: -5px;">
-                    Dashboard Overview
+                <h1 class="m-0" style="font-weight: 800; color: #000;">
+                    <img src="<?php echo BASE_URL; ?>image.png" alt="Logo" style="height: 50px; margin-right: 15px; margin-top: -5px;">
+                    Netcoder Technology - Dharamshala
                 </h1>
                 <p class="text-muted">Viewing: <strong><?php echo strtoupper($view_mode); ?> DATA</strong></p>
             </div>
