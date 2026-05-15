@@ -35,14 +35,13 @@ define('APP_NAME', 'Netcoder ERP');
 define('CURRENCY', '₹');
 
 // Robust Base URL detection
-$protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || 
-            (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') 
-            ? "https" : "http";
+$is_https = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') || 
+             (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
+$protocol = $is_https ? "https" : "http";
 $host = $_SERVER['HTTP_HOST'];
-$script_name = $_SERVER['SCRIPT_NAME']; // e.g. /nfms/config/database.php
-$config_dir = dirname($script_name); // e.g. /nfms/config
-$root_path = dirname($config_dir); // e.g. /nfms
-$base_url = $protocol . "://" . $host . rtrim($root_path, '/\\') . '/';
+$script_name = $_SERVER['SCRIPT_NAME']; 
+$root_path = str_replace('\\', '/', dirname(dirname($script_name)));
+$base_url = $protocol . "://" . $host . rtrim($root_path, '/') . '/';
 define('BASE_URL', $base_url);
 
 // Establishing Connection
@@ -89,6 +88,24 @@ $conn->query("CREATE TABLE IF NOT EXISTS `activity_logs` (
   `user_agent` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+
+// Client Invoices Table
+$conn->query("CREATE TABLE IF NOT EXISTS `client_invoices` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `invoice_no` varchar(50) NOT NULL,
+  `client_name` varchar(150) NOT NULL,
+  `client_phone` varchar(20) DEFAULT NULL,
+  `client_address` text DEFAULT NULL,
+  `service_description` text NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `tax` decimal(10,2) DEFAULT 0.00,
+  `total_amount` decimal(10,2) NOT NULL,
+  `payment_mode` varchar(50) DEFAULT 'Cash',
+  `invoice_date` date NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `invoice_no` (`invoice_no`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
 
 // Common Functions

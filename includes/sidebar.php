@@ -146,6 +146,13 @@
                         <p>Fee Receipts</p>
                     </a>
                 </li>
+                
+                <li class="nav-item">
+                    <a href="<?php echo BASE_URL; ?>invoices/client_list.php" class="nav-link">
+                         <i class="nav-icon fas fa-file-alt"></i>
+                        <p>Client Invoices</p>
+                    </a>
+                </li>
 
                 <li class="nav-item">
                     <a href="<?php echo BASE_URL; ?>expenses/list.php" class="nav-link">
