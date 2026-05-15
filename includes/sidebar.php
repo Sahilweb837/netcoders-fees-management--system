@@ -21,6 +21,13 @@
             .sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active {
                 background-color: #ff5532 !important;
             }
+            .brand-link {
+                background-color: #ffffff !important;
+                border-bottom: 1px solid #f0f0f0 !important;
+            }
+            .brand-link .brand-text {
+                color: #ff5532 !important;
+            }
         </style>
         <!-- Sidebar Menu -->
         <nav class="mt-2">

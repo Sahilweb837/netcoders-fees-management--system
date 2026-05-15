@@ -80,6 +80,7 @@ include '../includes/header.php';
                             <th>Date Paid</th>
                             <th>Method</th>
                             <th>Remarks</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -92,6 +93,11 @@ include '../includes/header.php';
                                 <td><?php echo date('d M, Y', strtotime($p['payment_date'])); ?></td>
                                 <td><?php echo $p['payment_method']; ?></td>
                                 <td class="text-muted small"><?php echo $p['remarks']; ?></td>
+                                <td>
+                                    <a href="print_slip.php?id=<?php echo $p['id']; ?>" class="btn btn-xs btn-outline-primary" target="_blank">
+                                        <i class="fas fa-print"></i> Print Slip
+                                    </a>
+                                </td>
                             </tr>
                             <?php endwhile; ?>
                         <?php else: ?>
