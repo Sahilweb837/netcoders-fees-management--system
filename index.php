@@ -69,11 +69,11 @@ include 'includes/header.php';
 ?>
 
 <style>
-    .content-wrapper { background: #ffffff !important; }
-    .content-header h1 { color: #000000 !important; }
-    .card { border: 1px solid #eee; box-shadow: none !important; }
-    .small-box { border-radius: 15px !important; overflow: hidden; }
-    .text-muted { color: #555 !important; }
+    .content-wrapper { background: #fdfdfd !important; }
+    .content-header h1 { color: #000 !important; }
+    .card { border: 1px solid #f0f0f0; box-shadow: 0 4px 12px rgba(0,0,0,0.03) !important; border-radius: 12px; }
+    .small-box { border-radius: 12px !important; border: 1px solid #f0f0f0; }
+    .text-muted { color: #888 !important; }
 </style>
 
 <!-- Content Header (Page header) -->

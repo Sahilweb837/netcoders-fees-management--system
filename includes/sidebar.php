@@ -1,5 +1,5 @@
 <!-- Main Sidebar Container -->
-<aside class="main-sidebar sidebar-dark-primary elevation-4">
+<aside class="main-sidebar sidebar-light-primary elevation-4">
     <!-- Brand Logo -->
     <a href="<?php echo BASE_URL; ?>" class="brand-link text-center py-3" style="background: #ffffff; border-bottom: 1px solid #eee;">
         <img src="<?php echo BASE_URL; ?>image.png" alt="Logo" class="brand-image" style="float: none; max-height: 55px; width: auto; filter: none;">
