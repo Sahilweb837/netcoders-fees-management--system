@@ -104,52 +104,52 @@ include 'includes/header.php';
         <!-- Small boxes (Stat box) -->
         <div class="row">
             <div class="col-lg-3 col-6">
-                <div class="small-box" style="background-color: var(--first-color); color: #fff;">
+                <div class="small-box bg-white shadow-sm border" style="border-left: 5px solid #ff5532 !important;">
                     <div class="inner">
-                        <h3><?php echo $total_students; ?></h3>
-                        <p>Total Students</p>
+                        <h3 style="color: #ff5532; font-weight: 800;"><?php echo $total_students; ?></h3>
+                        <p class="text-dark font-weight-bold">Total Students</p>
                     </div>
                     <div class="icon">
-                        <i class="fas fa-user-graduate"></i>
+                        <i class="fas fa-user-graduate" style="color: rgba(255, 85, 50, 0.2);"></i>
                     </div>
-                    <a href="students/list.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="students/list.php" class="small-box-footer text-muted" style="background: rgba(0,0,0,0.02);">View Details <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <div class="col-lg-3 col-6">
-                <div class="small-box bg-dark">
+                <div class="small-box bg-white shadow-sm border" style="border-left: 5px solid #28a745 !important;">
                     <div class="inner">
-                        <h3><?php echo $total_courses; ?></h3>
-                        <p>Total Courses</p>
+                        <h3 style="color: #28a745; font-weight: 800;"><?php echo $total_courses; ?></h3>
+                        <p class="text-dark font-weight-bold">Total Courses</p>
                     </div>
                     <div class="icon">
-                        <i class="fas fa-book"></i>
+                        <i class="fas fa-book" style="color: rgba(40, 167, 69, 0.2);"></i>
                     </div>
-                    <a href="courses/list.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="courses/list.php" class="small-box-footer text-muted" style="background: rgba(0,0,0,0.02);">View Details <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <div class="col-lg-3 col-6">
-                <div class="small-box" style="background-color: #ff8c00; color: #fff;">
+                <div class="small-box bg-white shadow-sm border" style="border-left: 5px solid #ffc107 !important;">
                     <div class="inner">
-                        <h3><?php echo $total_staff; ?></h3>
-                        <p>Total Staff</p>
+                        <h3 style="color: #ffc107; font-weight: 800;"><?php echo $total_staff; ?></h3>
+                        <p class="text-dark font-weight-bold">Total Staff</p>
                     </div>
                     <div class="icon">
-                        <i class="fas fa-users-cog"></i>
+                        <i class="fas fa-users-cog" style="color: rgba(255, 193, 7, 0.2);"></i>
                     </div>
-                    <a href="staff/list.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="staff/list.php" class="small-box-footer text-muted" style="background: rgba(0,0,0,0.02);">View Details <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <?php if ($_SESSION['role'] !== 'root_admin'): ?>
             <div class="col-lg-3 col-6">
-                <div class="small-box bg-secondary">
+                <div class="small-box bg-white shadow-sm border" style="border-left: 5px solid #17a2b8 !important;">
                     <div class="inner">
-                        <h3><?php echo CURRENCY . number_format($total_revenue); ?></h3>
-                        <p>Total Revenue</p>
+                        <h3 style="color: #17a2b8; font-weight: 800;"><?php echo CURRENCY . number_format($total_revenue); ?></h3>
+                        <p class="text-dark font-weight-bold">Total Revenue</p>
                     </div>
                     <div class="icon">
-                        <i class="fas fa-chart-line"></i>
+                        <i class="fas fa-chart-line" style="color: rgba(23, 162, 184, 0.2);"></i>
                     </div>
-                    <a href="reports/revenue.php" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    <a href="reports/revenue.php" class="small-box-footer text-muted" style="background: rgba(0,0,0,0.02);">View Details <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
             </div>
             <?php endif; ?>
