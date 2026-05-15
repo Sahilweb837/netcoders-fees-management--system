@@ -7,7 +7,21 @@
     </a>
 
     <!-- Sidebar -->
-    <div class="sidebar">
+    <div class="sidebar" style="background: #ffffff;">
+        <style>
+            .nav-sidebar .nav-link.active {
+                background-color: #ff5532 !important;
+                color: #fff !important;
+                box-shadow: 0 4px 10px rgba(255, 85, 50, 0.3);
+            }
+            .nav-sidebar .nav-link:hover {
+                background-color: #f8f9fa;
+                color: #ff5532 !important;
+            }
+            .sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active {
+                background-color: #ff5532 !important;
+            }
+        </style>
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
